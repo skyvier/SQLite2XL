@@ -52,22 +52,6 @@ public class Excel2SQLiteActivity extends AppCompatActivity {
                 // if you want to add column in excel and import into DB, you must drop the table
                 ExcelToSQLite excelToSQLite = new ExcelToSQLite(getApplicationContext(), DBHelper.DB_NAME, false);
                 // Import EXCEL FILE to SQLite
-                excelToSQLite.importFromFile(directory_path, new ExcelToSQLite.ImportListener() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onCompleted(String dbName) {
-                        Utils.showSnackBar(view, "Excel imported into " + dbName);
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Utils.showSnackBar(view, "Error : " + e.getMessage());
-                    }
-                });
                 dbQueries.close();
             }
         });

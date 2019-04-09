@@ -27,19 +27,15 @@ public class SQLiteToExcel {
     private static Handler handler = new Handler(Looper.getMainLooper());
 
     private SQLiteDatabase database;
-    private String mExportPath;
+    private FileOutputStream mExportStream;
     private HSSFWorkbook workbook;
 
     private List<String> mExcludeColumns = null;
     private HashMap<String, String> mPrettyNameMapping = null;
     private ExportCustomFormatter mCustomFormatter = null;
 
-    public SQLiteToExcel(Context context, String dbName) {
-        this(context, dbName, Environment.getExternalStorageDirectory().toString() + File.separator);
-    }
-
-    public SQLiteToExcel(Context context, String dbName, String exportPath) {
-        mExportPath = exportPath;
+    public SQLiteToExcel(Context context, String dbName, FileOutputStream exportStream) {
+        mExportStream = exportStream;
         try {
             database = SQLiteDatabase.openOrCreateDatabase(context.getDatabasePath(dbName).getAbsolutePath(), null);
         } catch (Exception e) {
@@ -101,11 +97,10 @@ public class SQLiteToExcel {
                 createSheet(tables.get(i), sheet);
             }
         }
-        File file = new File(mExportPath, fileName);
-        FileOutputStream fos = new FileOutputStream(file);
-        workbook.write(fos);
-        fos.flush();
-        fos.close();
+
+        workbook.write(mExportStream);
+        mExportStream.flush();
+        mExportStream.close();
         workbook.close();
         database.close();
     }
@@ -139,7 +134,7 @@ public class SQLiteToExcel {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                listener.onCompleted(mExportPath + fileName);
+                                listener.onCompleted(fileName);
                             }
                         });
                     }

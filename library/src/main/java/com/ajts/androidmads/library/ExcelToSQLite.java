@@ -85,19 +85,16 @@ public class ExcelToSQLite {
         }).start();
     }
 
-    public void importFromFile(String filePath, ImportListener listener) {
-        importFromFile(new File(filePath), listener);
-    }
-
-    private void importFromFile(final File file, final ImportListener listener) {
+    public void importFromStream(final FileInputStream importStream, final ImportListener listener) {
         if (listener != null) {
             listener.onStart();
         }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    working(new FileInputStream(file));
+                    working(importStream);
                     if (listener != null) {
                         handler.post(new Runnable() {
                             @Override
@@ -121,7 +118,6 @@ public class ExcelToSQLite {
                 }
             }
         }).start();
-
     }
 
     private void working(InputStream stream) throws Exception {

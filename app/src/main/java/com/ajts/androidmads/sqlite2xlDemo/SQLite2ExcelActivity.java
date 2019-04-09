@@ -77,69 +77,13 @@ public class SQLite2ExcelActivity extends AppCompatActivity {
         btnExport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                // Export SQLite DB as EXCEL FILE
-                sqliteToExcel = new SQLiteToExcel(getApplicationContext(), DBHelper.DB_NAME, directory_path);
-                sqliteToExcel.exportAllTables("users.xls", new SQLiteToExcel.ExportListener() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onCompleted(String filePath) {
-                        Utils.showSnackBar(view, "Successfully Exported");
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Utils.showSnackBar(view, e.getMessage());
-                    }
-                });
             }
         });
 
         btnExportExclude.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                // Export SQLite DB as EXCEL FILE
-                sqliteToExcel = new SQLiteToExcel(getApplicationContext(), DBHelper.DB_NAME, directory_path);
-                // Exclude Columns
-                List<String> excludeColumns = new ArrayList<>();
-                excludeColumns.add("contact_id");
 
-                // Prettify or Naming Columns
-                HashMap<String, String> prettyNames = new HashMap<>();
-                prettyNames.put("contact_person_name", "Person Name");
-                prettyNames.put("contact_no", "Mobile Number");
-
-                sqliteToExcel.setExcludeColumns(excludeColumns);
-                sqliteToExcel.setPrettyNameMapping(prettyNames);
-                sqliteToExcel.setCustomFormatter(new SQLiteToExcel.ExportCustomFormatter() {
-                    @Override
-                    public String process(String columnName, String value) {
-                        switch (columnName) {
-                            case "contact_person_name":
-                                value = "Sale";
-                        }
-                        return value;
-                    }
-                });
-                sqliteToExcel.exportAllTables("users1.xls", new SQLiteToExcel.ExportListener() {
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onCompleted(String filePath) {
-                        Utils.showSnackBar(view, "Successfully Exported");
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-                        Utils.showSnackBar(view, e.getMessage());
-                    }
-                });
             }
         });
     }
