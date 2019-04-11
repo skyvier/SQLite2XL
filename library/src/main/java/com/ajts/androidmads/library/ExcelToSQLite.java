@@ -85,7 +85,7 @@ public class ExcelToSQLite {
         }).start();
     }
 
-    public void importFromStream(final FileInputStream importStream, final ImportListener listener) {
+    public void importFromStream(final InputStream importStream, final ImportListener listener) {
         if (listener != null) {
             listener.onStart();
         }
